@@ -51,6 +51,7 @@ int main()
     }
     tree.insertPointCloud(octoPointCloud, sensorOrigin);
 
+*/
     std::cout<<"Octree Size "<<tree.size();
 
     for(octomap::OcTree::leaf_iterator it = tree.begin_leafs(),
@@ -58,8 +59,8 @@ int main()
     {
       //manipulate node, e.g.:
  //     std::cout << "Node center: " << it.getCoordinate() << std::endl;
-        if(tree.isNodeOccupied(*it))
-        std::cout << "Node center: " << it->getOccupancy() << std::endl;
+    //    if(tree.isNodeOccupied(*it))
+  //      std::cout << "Node center: " << it->getOccupancy() << std::endl;
     }
 
     std::cout << endl;
