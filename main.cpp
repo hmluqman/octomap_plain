@@ -19,10 +19,9 @@ int main()
         return (-1);
     }
     std::cout << "Loaded  points "<<cloud.size()<<std::endl;
-    octomap::OcTree tree (0.2);  // create empty tree with resolution 0.1
-    tree.setProbHit(0.9);
-    tree.setProbMiss(0.2);
+    octomap::OcTree tree (0.1);  // create empty tree with resolution 0.1
     octomap::point3d sensorOrigin(0.0, 0.0, 0.0);
+
     octomap::Pointcloud octoPointCloud;
 
     for(int i = 0; i < int(cloud.size()); ++i)
@@ -34,51 +33,14 @@ int main()
 
     std::cout<<"Octree Size "<<tree.size();
 
-    for(octomap::OcTree::tree_iterator it = tree.begin_tree(),
-           end=tree.end_tree(); it!= end; ++it)
-    {
-        it->setLogOdds(0.30);
-    }
-
-
-    for(octomap::OcTree::tree_iterator it = tree.begin_tree(),
-           end=tree.end_tree(); it!= end; ++it)
+    for(octomap::OcTree::leaf_iterator it = tree.begin_leafs(),
+           end=tree.end_leafs(); it!= end; ++it)
     {
       //manipulate node, e.g.:
  //     std::cout << "Node center: " << it.getCoordinate() << std::endl;
+        if(tree.isNodeOccupied(*it))
         std::cout << "Node center: " << it->getOccupancy() << std::endl;
-//      std::cout << "Node size: " << it.getSize() << std::endl;
-//      std::cout << "Node value: " << it->getValue() << std::endl;
     }
-
-    // insert some measurements of occupied cells
-/*
-    for (int x=-20; x<20; x++) {
-      for (int y=-20; y<20; y++) {
-        for (int z=-20; z<20; z++) {
-          octomap::point3d endpoint ((float) x*0.05f, (float) y*0.05f, (float) z*0.05f);
-          tree.updateNode(endpoint, true); // integrate 'occupied' measurement
-        }
-      }
-    }
-
-    // insert some measurements of free cells
-
-    for (int x=-30; x<30; x++) {
-      for (int y=-30; y<30; y++) {
-        for (int z=-30; z<30; z++) {
-          octomap::point3d endpoint ((float) x*0.02f-1.0f, (float) y*0.02f-1.0f, (float) z*0.02f-1.0f);
-          tree.updateNode(endpoint, false);  // integrate 'free' measurement
-        }
-      }
-    }
-*/
-    std::cout << endl;
-    std::cout << "performing some queries:" << endl;
-
-    octomap::point3d query (0., 0., 0.);
-    octomap::OcTreeNode* result = tree.search (query);
-   // print_query_info(query, result);
 
     std::cout << endl;
     tree.writeBinary("simple_tree.bt");
