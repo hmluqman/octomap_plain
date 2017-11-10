@@ -18,8 +18,10 @@ int main()
         PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
         return (-1);
     }
- //   std::cout << "Loaded  points "<<cloud->size();
-    octomap::OcTree tree (0.1);  // create empty tree with resolution 0.1
+    std::cout << "Loaded  points "<<cloud.size()<<std::endl;
+    octomap::OcTree tree (0.2);  // create empty tree with resolution 0.1
+    tree.setProbHit(0.9);
+    tree.setProbMiss(0.2);
     octomap::point3d sensorOrigin(0.0, 0.0, 0.0);
     octomap::Pointcloud octoPointCloud;
 
@@ -30,12 +32,22 @@ int main()
     }
     tree.insertPointCloud(octoPointCloud, sensorOrigin);
 
+    std::cout<<"Octree Size "<<tree.size();
+
+    for(octomap::OcTree::tree_iterator it = tree.begin_tree(),
+           end=tree.end_tree(); it!= end; ++it)
+    {
+        it->setLogOdds(0.30);
+    }
+
+
     for(octomap::OcTree::tree_iterator it = tree.begin_tree(),
            end=tree.end_tree(); it!= end; ++it)
     {
       //manipulate node, e.g.:
-      std::cout << "Node center: " << it.getCoordinate() << std::endl;
-      std::cout << "Node size: " << it.getSize() << std::endl;
+ //     std::cout << "Node center: " << it.getCoordinate() << std::endl;
+        std::cout << "Node center: " << it->getOccupancy() << std::endl;
+//      std::cout << "Node size: " << it.getSize() << std::endl;
 //      std::cout << "Node value: " << it->getValue() << std::endl;
     }
 
