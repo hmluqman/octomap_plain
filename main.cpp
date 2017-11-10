@@ -22,8 +22,28 @@ int main()
     octomap::OcTree tree (0.1);  // create empty tree with resolution 0.1
     octomap::point3d sensorOrigin(0.0, 0.0, 0.0);
 
-    octomap::Pointcloud octoPointCloud;
+    octomap::KeySet occupied_cells;
+    // define a std pair to get results of insert function later
+    std::pair<octomap::KeySet::iterator,bool> ret = std::make_pair(occupied_cells.begin(), false);
 
+    for(int i = 0; i < int(cloud.size()); ++i)
+    {
+        octomap::point3d point(cloud[i].x, cloud[i].y, cloud[i].z);
+        // occupied endpoint
+        octomap::OcTreeKey key;
+        if (tree.coordToKeyChecked(point, key))
+        {
+            ret.second = false;
+            // get the results of insert function - returns false if key is already present
+            ret = occupied_cells.insert(key);
+            if (ret.second)
+                tree.updateNode(key, true);
+        }
+
+    }
+/*
+
+    octomap::Pointcloud octoPointCloud;
     for(int i = 0; i < int(cloud.size()); ++i)
     {
         octomap::point3d point(cloud[i].x, cloud[i].y, cloud[i].z);
