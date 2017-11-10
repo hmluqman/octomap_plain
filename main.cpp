@@ -41,32 +41,26 @@ int main()
         }
 
     }
-/*
 
-    octomap::Pointcloud octoPointCloud;
-    for(int i = 0; i < int(cloud.size()); ++i)
-    {
-        octomap::point3d point(cloud[i].x, cloud[i].y, cloud[i].z);
-        octoPointCloud.push_back(point);
-    }
-    tree.insertPointCloud(octoPointCloud, sensorOrigin);
-
-*/
-    std::cout<<"Octree Size "<<tree.size();
-
-    for(octomap::OcTree::leaf_iterator it = tree.begin_leafs(),
-           end=tree.end_leafs(); it!= end; ++it)
+    std::cout<<"Octree Size "<<tree.size()<<std::endl;
+    std::cout<<"occupied_cells Size "<<occupied_cells.size();
+    for(octomap::OcTree::tree_iterator it = tree.begin_tree(),
+           end=tree.end_tree(); it!= end; ++it)
     {
       //manipulate node, e.g.:
  //     std::cout << "Node center: " << it.getCoordinate() << std::endl;
     //    if(tree.isNodeOccupied(*it))
-  //      std::cout << "Node center: " << it->getOccupancy() << std::endl;
+            std::cout << "Node center: " << it->getOccupancy() << std::endl;
     }
 
-    std::cout << endl;
+    for (auto it = occupied_cells.begin(); it !=occupied_cells.end(); ++it)
+    {
+        octomap::OcTreeKey key = *it;
+        std::cout << key[0]<<std::endl ;
+        octomap::point3d randPoint = tree.keyToCoord(key);
+        std::cout << randPoint.x()<<std::endl ;
+    }
     tree.writeBinary("simple_tree.bt");
-    std::cout << "wrote example file simple_tree.bt" << endl << endl;
-    std::cout << "now you can use octovis to visualize: octovis simple_tree.bt"  << endl;
     std::cout << "Hint: hit 'F'-key in viewer to see the freespace" << endl  << endl;
 
 
