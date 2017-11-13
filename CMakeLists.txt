@@ -10,7 +10,7 @@ include_directories(
     ${OCTOMAP_INCLUDE_DIRS}
     )
     
-add_executable(${PROJECT_NAME} "main.cpp")
+add_executable(${PROJECT_NAME} "octomap_plain.cpp")
 target_link_libraries(${PROJECT_NAME}
     ${PCL_LIBRARIES}  
     ${OCTOMAP_LIBRARIES}
