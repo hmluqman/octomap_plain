@@ -50,37 +50,27 @@ int main(int argc, char** argv)
             {
                 for (float z=-(resolution*h); z<=(resolution*h); z= z+resolution)
                 {
-                    float xIncrement = (point.x() + x); float yIncrement = (point.y() + y); float zIncrement = (point.z() + z);
+                    float xIncrement = (point.x() + x);
+                    float yIncrement = (point.y() + y);
+                    float zIncrement = (point.z() + z);
 
-                    octomap::point3d endpoint(xIncrement, yIncrement, zIncrement);
+                    octomap::point3d newPoint(xIncrement, yIncrement, zIncrement);
 
                     octomap::OcTreeKey key;
-                    if (tree.coordToKeyChecked(endpoint, key))
+                    if (tree.coordToKeyChecked(newPoint, key))
                     {
                         retemty.second = false;
                         // get the results of insert function - returns false if key is already present
                         retemty = empty_cells.insert(key);
                         if (retemty.second)
-                            tree.updateNode(endpoint, false); // integrate 'occupied' measurement
+                            tree.updateNode(newPoint, false); // integrate 'occupied' measurement
                     }
 
                 }
             }
-
         }
-
     }
 
-/*
-    for(octomap::OcTree::leaf_iterator it = tree.begin_leafs(), end=tree.end_leafs(); it!= end; ++it)
-    {
-            octomap::OcTreeKey key;
-            key = it.getKey();
-            octomap::point3d point = tree.keyToCoord(key);
-//            std::cout <<"Point = "<<point.x()<<" "<<point.y()<<" "<<point.z()<<std::endl;
-//            std::cout <<"Key = "<<key.k[0]<<" "<<key.k[1]<<" "<<key.k[2]<<std::endl;
-    }
-*/
     tree.writeBinary("automated_tree.bt");
     cout << "wrote example file automated_tree.bt" << endl << endl;
 
