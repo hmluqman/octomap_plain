@@ -1,6 +1,7 @@
 #include <octomap/octomap.h>
 #include <octomap/OcTree.h>
-
+#include <octomap/ColorOcTree.h>
+#include <math.h>
 using namespace std;
 
 int main(int argc, char** argv)
@@ -63,7 +64,19 @@ int main(int argc, char** argv)
                         // get the results of insert function - returns false if key is already present
                         retemty = empty_cells.insert(key);
                         if (retemty.second)
-                            tree.updateNode(newPoint, false); // integrate 'occupied' measurement
+                        {
+                            octomap::OcTreeNode* nodePtr = tree.updateNode(newPoint, false);
+                            float deltaS = sqrt(x*x + y*y + z*z );
+                            if (deltaS < (h*resolution))
+                            {
+                                float u = deltaS / (h*resolution);
+                                float prob = 0.75*(1- u*u);
+                                if (prob < 0)
+                                    prob = 0;
+                                nodePtr->setValue(prob);
+                            std::cout << "Added Node value "<<nodePtr->getValue()<<std::endl;
+                            }
+                        }
                     }
 
                 }
