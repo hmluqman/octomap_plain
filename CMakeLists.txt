@@ -16,3 +16,9 @@ target_link_libraries(${PROJECT_NAME}
     ${OCTOMAP_LIBRARIES}
 )
 
+add_executable(automated "octomap_automated_data.cpp")
+target_link_libraries(automated
+    ${PCL_LIBRARIES}  
+    ${OCTOMAP_LIBRARIES}
+)
+
