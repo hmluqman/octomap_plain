@@ -37,6 +37,9 @@ int main(int argc, char** argv)
 
     for(octomap::OcTree::leaf_iterator it = tree.begin_leafs(), end=tree.end_leafs(); it!= end; ++it)
     {
+        //set the value of radar target equal to 3/4
+        it->setValue(0.75);
+
         octomap::OcTreeKey key;
         key = it.getKey();
         octomap::point3d point = tree.keyToCoord(key);
