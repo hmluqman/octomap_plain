@@ -96,8 +96,8 @@ int main(int argc, char** argv)
         }
     }
 
-    tree.writeBinary("automated_tree.bt");
-    cout << "wrote example file automated_tree.bt" << endl << endl;
+    tree.write("automated_tree.ot");
+    cout << "wrote example file automated_tree.ot" << endl << endl;
 
     return 0;
 }
