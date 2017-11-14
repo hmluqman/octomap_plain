@@ -9,15 +9,15 @@ int main(int argc, char** argv)
 
     float resolution = 0.1;
     int h = 3;
-    octomap::OcTree tree (resolution);  // create empty tree with resolution 0.1
+    octomap::ColorOcTree tree (resolution);  // create empty tree with resolution 0.1
     int z = 0;
     octomap::KeySet occupied_cells;
     // define a std pair to get results of insert function later
     std::pair<octomap::KeySet::iterator,bool> ret = std::make_pair(occupied_cells.begin(), false);
 
-    for (int x=1; x<10; x= x+4)
+    for (int x=1; x<10; x= x+5)
     {
-        for (int y=-3; y<4; y= y+3)
+        for (int y=-3; y<4; y= y+4)
         {
             octomap::point3d endpoint ((float) x*1.00f, (float) y*1.00f, (float) z*1.00f);
             octomap::OcTreeKey key;
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     // define a std pair to get results of insert function later
     std::pair<octomap::KeySet::iterator,bool> retemty = std::make_pair(empty_cells.begin(), false);
 
-    for(octomap::OcTree::leaf_iterator it = tree.begin_leafs(), end=tree.end_leafs(); it!= end; ++it)
+    for(octomap::ColorOcTree::leaf_iterator it = tree.begin_leafs(), end=tree.end_leafs(); it!= end; ++it)
     {
         //set the value of radar target equal to 3/4
         it->setValue(0.75);
@@ -65,7 +65,8 @@ int main(int argc, char** argv)
                         retemty = empty_cells.insert(key);
                         if (retemty.second)
                         {
-                            octomap::OcTreeNode* nodePtr = tree.updateNode(newPoint, false);
+                            octomap::ColorOcTreeNode* nodePtr = tree.updateNode(newPoint, false);
+
                             float deltaS = sqrt(x*x + y*y + z*z );
                             if (deltaS < (h*resolution))
                             {
@@ -74,6 +75,7 @@ int main(int argc, char** argv)
                                 if (prob < 0)
                                     prob = 0;
                                 nodePtr->setValue(prob);
+                                nodePtr->setColor(255,0,0);
                             std::cout << "Added Node value "<<nodePtr->getValue()<<std::endl;
                             }
                         }
