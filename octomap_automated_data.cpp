@@ -2,6 +2,7 @@
 #include <octomap/OcTree.h>
 #include <octomap/ColorOcTree.h>
 #include <math.h>
+#include <algorithm>    //std::max
 using namespace std;
 
 int main(int argc, char** argv)
@@ -27,7 +28,11 @@ int main(int argc, char** argv)
                 // get the results of insert function - returns false if key is already present
                 ret = occupied_cells.insert(key);
                 if (ret.second)
-                    tree.updateNode(endpoint, true); // integrate 'occupied' measurement
+                {
+                    octomap::ColorOcTreeNode* nodePtr = tree.updateNode(endpoint, true); // integrate 'occupied' measurement
+                    //nodePtr->setColor(255,0,0);
+                    tree.setNodeColor(key, 255,0,0);
+                }
             }
         }
     }
@@ -35,7 +40,8 @@ int main(int argc, char** argv)
     octomap::KeySet empty_cells;
     // define a std pair to get results of insert function later
     std::pair<octomap::KeySet::iterator,bool> retemty = std::make_pair(empty_cells.begin(), false);
-
+    float minimum = 0.0, maximum = 1.0, ratio;
+    unsigned int r, g, b;
     for(octomap::ColorOcTree::leaf_iterator it = tree.begin_leafs(), end=tree.end_leafs(); it!= end; ++it)
     {
         //set the value of radar target equal to 3/4
@@ -75,8 +81,12 @@ int main(int argc, char** argv)
                                 if (prob < 0)
                                     prob = 0;
                                 nodePtr->setValue(prob);
-                                nodePtr->setColor(255,0,0);
-                            std::cout << "Added Node value "<<nodePtr->getValue()<<std::endl;
+                                ratio = 2 * (prob - minimum);
+                                b = (int)std::max(minimum, 255*(1 - ratio));
+                                r = (int)std::max(minimum, 255*(ratio -1));
+                                g = 255 - b - r;
+                                nodePtr->setColor(r,g,b);
+                                std::cout << "Added Node value "<<nodePtr->getValue()<<std::endl;
                             }
                         }
                     }
