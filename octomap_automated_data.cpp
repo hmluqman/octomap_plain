@@ -3,13 +3,25 @@
 #include <octomap/ColorOcTree.h>
 #include <math.h>
 #include <algorithm>    //std::max
+#include "octomap_kernel_density_estimation.h"
 using namespace std;
 
 int main(int argc, char** argv)
 {
 
+    mgc::KDEOctomap bbc(0.10, 2);
+    
+        bbc.treeCreation(1.0,1,0,3,1,1);
+        bbc.kdeImplementation();
+     //   bbc.parentNodeValueSet();
+    
+        octomap::ColorOcTree exam = *bbc.tree_;
+        exam.write("class_tree.ot");
+        cout << "wrote example file automated_tree.ot" << endl << endl;
+        
+    /*
     float resolution = 0.1;
-    int h = 3;
+    int h = 2;
     octomap::ColorOcTree tree (resolution);  // create empty tree with resolution 0.1
     int z = 0;
     octomap::KeySet occupied_cells;
@@ -86,7 +98,6 @@ int main(int argc, char** argv)
                                 r = (int)std::max(minimum, 255*(ratio -1));
                                 g = 255 - b - r;
                                 nodePtr->setColor(r,g,b);
-                                std::cout << "Added Node value "<<nodePtr->getValue()<<std::endl;
                             }
                         }
                     }
@@ -95,9 +106,12 @@ int main(int argc, char** argv)
             }
         }
     }
+    
+    octomap::KeySet::iterator it = occupied_cells.begin();
+    cout << "Occupance_key "<< it->k[0] <<std::endl;
 
-    tree.write("automated_tree.ot");
+    exam.write("automated_tree0.ot");
     cout << "wrote example file automated_tree.ot" << endl << endl;
-
+*/
     return 0;
 }
