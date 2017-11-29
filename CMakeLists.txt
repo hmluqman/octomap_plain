@@ -32,8 +32,8 @@ target_link_libraries(automated
     ${OCTOMAP_LIBRARIES}
 )
 
-add_executable(just_octomap "just_octomap.cpp")
-target_link_libraries(just_octomap
+add_executable(stamped_octomap "stamped_octomap.cpp")
+target_link_libraries(stamped_octomap
     ${OCTOMAP_LIBRARIES}
 )
 
