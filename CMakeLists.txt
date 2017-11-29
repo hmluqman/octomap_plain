@@ -11,7 +11,7 @@ include_directories(
     ${OCTOMAP_INCLUDE_DIRS}
     )
     
-add_executable(${PROJECT_NAME} "octomap_plain.cpp")
+add_executable(${PROJECT_NAME} "octomap_pcd.cpp")
 target_link_libraries(${PROJECT_NAME}
     ${PCL_LIBRARIES}  
     ${OCTOMAP_LIBRARIES}
@@ -31,4 +31,11 @@ target_link_libraries(automated
     ${PCL_LIBRARIES}  
     ${OCTOMAP_LIBRARIES}
 )
+
+add_executable(just_octomap "just_octomap.cpp")
+target_link_libraries(just_octomap
+    ${OCTOMAP_LIBRARIES}
+)
+
+add_executable(ftest "function_testing.cpp")
 
