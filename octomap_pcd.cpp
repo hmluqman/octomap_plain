@@ -16,6 +16,7 @@ int main()
         PCL_ERROR ("Couldn't read file test_pcd.pcd \n");
         return (-1);
     }
+
     std::cout << "Loaded  points "<<cloud.size()<<std::endl;
     octomap::OcTree tree (0.1);  // create empty tree with resolution 0.1
     octomap::point3d sensorOrigin(0.0, 0.0, 0.0);
